@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <script language="javascript">
+      var eventType = "temperature"; // Default event type
+      var xmlEnabled = false; // Default XML parameter value
+      var units = "Celsius";
+      if (eventType == "temperature") {
+        var source = new EventSource(
+          `http://localhost:9090/${eventType}?xml=${xmlEnabled}&units=${units}`
+        );
+      } else {
+        var source = new EventSource(
+          `http://localhost:9090/${eventType}?xml=${xmlEnabled}`
+        );
+      }
+
+      function changeEventSource() {
+        eventType = document.getElementById("eventType").value;
+        xmlEnabled = document.getElementById("xmlQuery").value === "true";
+        units = document.getElementById("unitsQuery").value;
+        source.close(); // Close the existing EventSource connection
+        source = new EventSource(
+          `http://localhost:9090/${eventType}?xml=${xmlEnabled}&units=${units}`
+        );
+
+        source.onmessage = function (event) {
+          console.log(event);
+          document.getElementById(
+            "result"
+          ).innerHTML = `<h3>${eventType} medida: ${event.data}</h3>`;
+        };
+      }
+
+      source.onmessage = function (event) {
+        console.log(event);
+        document.getElementById(
+          "result"
+        ).innerHTML = `<h3>${eventType} medida: ${event.data}</h3>`;
+      };
+    </script>
+  </head>
+  <body>
+    <form>
+      <label for="eventType">Select Event Type:</label>
+      <select id="eventType">
+        <option value="temperature">Temperature</option>
+        <option value="light">Light</option>
+      </select>
+
+      <label for="xmlQuery">XML Parameter:</label>
+      <select id="xmlQuery">
+        <option value="false">False</option>
+        <option value="true">True</option>
+      </select>
+      <label for="unitsQuery">Units Parameter:</label>
+      <select id="unitsQuery">
+        <option value="Celsius">Celsius</option>
+        <option value="Fahrenheit">Fahrenheit</option>
+      </select>
+      <button type="button" onclick="changeEventSource()">
+        Change Event Source
+      </button>
+
+      <div id="result"></div>
+    </form>
+  </body>
+</html>
