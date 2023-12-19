@@ -18,3 +18,10 @@ This is the Second assignment for the IOT web of things class CIN UFPE
 
 - `webserver_EX2.js` is a modified version of `webserver.js` to use sse to serve a new value every 2 seconds.
 - `client.js` serves `sse_client.html` which uses eventSource to get the data from the webserver
+
+This is the Third assignment for the IOT web of things class CIN UFPE
+
+**MQTT:**
+
+- `Publisher.js` is the publisher in the publisher/subscriber mqtt and publishs a random number every second
+- `Subscriber.js` is the subscriber in the publisher/subscriber mqtt and reads the messages from publisher
